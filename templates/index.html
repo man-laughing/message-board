@@ -1,0 +1,123 @@
+<html>
+<head>
+   <title>test page</title>
+   <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+   <script src="../static/js/jquery.min.js"></script>
+   <script src="../static/js/jquery-ui.js"></script>
+   <link  href="../static/css/jquery-ui.css" rel="stylesheet">
+   <style>
+     .container {  
+          background-color:blue;
+          width:  100%;
+          height: 100%;
+          margin-left: auto; 
+          margin-right: auto; 
+      } 
+
+     .content {  
+          background-color:yellow;
+          width:  50%;
+          height: 100%;
+          margin-left:   auto; 
+          margin-right:  auto; 
+      } 
+          
+     .content-liuyanban {  
+      //    background-color:orange;
+          width:  70%;
+          height: 40%;
+          margin-left: auto; 
+          margin-right: auto; 
+          text-align:center;
+      }
+
+     .content-liuyanban-div {  
+          width:  90%;
+          margin-left: auto; 
+          margin-right: auto; 
+          text-align:left;
+      }
+     .content-pinglun {  
+          //background-color:red;
+          width:  70%;
+          height: 40%;
+          margin-left: auto; 
+          margin-right: auto; 
+          text-align:center;
+      }
+
+   </style>
+
+   <script>
+      //autoRefresh pinglun
+      function autoRefresh() {
+           $.ajax({url:"/zuixinpinglunpost",success:function(result){
+               $("#tbody").empty();
+               for (i=0;i<result.length;i++) {
+                   var message = "<tr><td>" + result[i].utm + "</td>"  + "<td>" + result[i].uid + "</td>" + "<td>" + result[i].umsg + "</td></tr>";
+                   $("#tbody").append(message);
+               }
+           }});
+      }
+
+      $(document).ready(function() {
+           setInterval("autoRefresh()", 500);
+
+          //commit liuyan
+          $("#bt1").click(function(event){
+               var mymsg = $("#test_textarea").val();
+               if ( mymsg == "") { 
+                 alert("不能为空请输入留言！");
+               } else {
+                  //alert(myval);
+                  $.ajax({
+                     type: "POST",
+                     url:  "/liuyanbanpost",
+                     data: {"msg":mymsg},
+                     dataType: "json",
+                     success: function (res) { 
+                         alert(res['msg']); 
+                     }
+                  });
+               }
+          });
+
+      });
+   </script> 
+</head>
+<body>
+  <div class="container" >
+
+     <div class="content">
+     
+          <div id="liuyanban" class="content-liuyanban">
+               <h2>留言板</h2>
+               <div class="form-group">
+                   <div class="content-liuyanban-div">
+                        <textarea class="form-control" id="test_textarea" name="user_input_textarea" rows="10" placeholder="请留言..."></textarea>
+                  </div>
+                  <button type="submit" id="bt1">提交</button>
+                  <hr/>
+               </div>   
+          </div>
+
+          <div class="content-pinglun">
+               <h2>最新留言</h2>
+            <table class="table" style="table-layout:fixed;">
+               <thead>
+                  <tr>
+                    <th>Time</th>
+                    <th>User</th>
+                    <th>Message</th>
+                  </tr>
+               </thead>
+               <tbody id="tbody">
+               </tbody>
+            </table>
+          </div>
+ 
+     </div>
+
+  </div>
+</body>
+</html>
