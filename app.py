@@ -3,14 +3,11 @@
 
 from random import random
 from flask import Flask,render_template,request,jsonify
-from flask_pymongo import PyMongo
 from flask_redis import FlaskRedis
+from datetime import datetime
 import uuid
-import pymongo
 import json
 import time
-from datetime import datetime
-from flask_redis import FlaskRedis
 
 app = Flask(__name__)
 #app.config['MONGO_URI']="mongodb://10.122.138.24:27017/flask" 
