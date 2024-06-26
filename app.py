@@ -9,10 +9,8 @@ import uuid
 import json
 import time
 
-app = Flask(__name__)
-#app.config['MONGO_URI']="mongodb://10.122.138.24:27017/flask" 
+app = Flask(__name__) 
 app.config['REDIS_URL']="redis://127.0.0.1:6379/0" 
-#mongo = PyMongo(app)
 redis_store = FlaskRedis(app)
 
 '''
@@ -43,15 +41,10 @@ def liuyanbanpost():
         return jsonify({"code":1,"msg":"留言成功!"})
     else:
         return jsonify({"code":0,"msg":"留言失败!"})
-    #mongo.db.message.insert_one(mdoc)
+    
 
 @app.route("/zuixinpinglunpost",methods=['GET'])
 def zuixinpinglunpost():
-   #rrr = []
-   #for i in mongo.db.message.find().sort("utm",pymongo.DESCENDING).limit(3):
-   #    i.pop("_id")
-   #    ii = {"utm":utc2local(i['utm']),"uid":i['uid'],"umsg":i['umsg']}
-   #    rrr.append(ii)
    ddd = []
    rrr = redis_store.lrange("messages",0,2)
    for i in rrr:ddd.append(json.loads(i)) 
