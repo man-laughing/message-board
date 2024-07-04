@@ -10,7 +10,7 @@ import json
 import time
 
 app = Flask(__name__) 
-app.config['REDIS_URL']="redis://127.0.0.1:6379/0" 
+app.config['REDIS_URL']="redis://messageboard-redis:6379/0" 
 redis_store = FlaskRedis(app)
 
 '''
