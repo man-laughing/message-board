@@ -50,6 +50,10 @@ def zuixinpinglunpost():
    for i in rrr:ddd.append(json.loads(i)) 
    return jsonify(ddd)
     
-
+@app.route("/healthcheck",methods=['GET'])
+def healthcheck():
+    time.sleep(0.02)
+    return jsonify({"code":200,"status":"OK"})
+    
 if __name__ == "__main__":
     app.run(host="0.0.0.0",debug=True)
