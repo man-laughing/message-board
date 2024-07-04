@@ -21,10 +21,16 @@ def utc2local(utc_dtm):
     return str(utc_dtm + offset)
 '''
 
+def getLocaltime():
+    local_time = datetime.now()
+    formatted_time = local_time.strftime("%Y-%m-%d %H:%M:%S")
+    return formatted_time
+
 @app.route("/")
 def index():
     return render_template("index.html")
 
+#"utm":time.strftime("%Y/%m/%d %H:%M:%S",time.localtime()) 
 @app.route("/liuyanbanpost",methods=['POST'])
 def liuyanbanpost():
     msg  = request.form['msg'].strip().encode('utf8')
@@ -33,7 +39,7 @@ def liuyanbanpost():
     mdoc = {
              "uid":uid,
              "umsg":msg,
-             "utm":time.strftime("%Y/%m/%d %H:%M:%S",time.localtime()) 
+             "utm": getLocaltime()
     }
     redisstring = json.dumps(mdoc)
     rs = redis_store.lpush("messages",redisstring)
